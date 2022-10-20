@@ -1,17 +1,12 @@
 <template>
 <div class="propertyDetails">
-    {{props.address}}
+    
 </div>
 </template>
 
 <script>
 export default {
-    props:['props'],
-  setup(props){
- 
    
-     console.log(props);
-  }
 }
 </script>
 

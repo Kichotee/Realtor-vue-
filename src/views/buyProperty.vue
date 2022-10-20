@@ -1,12 +1,13 @@
 <template>
-<div class="property-grid">
+<div class="property-grid" >
 
-    <div v-for="item in buyPropertyItems" :key="item.zpid" class="box">
+    <div v-for="item in buyPropertyItems" @click="showModalOfItem = item.zpid" :key="item.zpid" class="box">
 
-        <div :style="{'background-image': 'url('+item.imgSrc + ')'  }" class="innerbox" @click="propertyToggle">
+        <div :style="{'background-image': 'url('+item.imgSrc + ')'  }" class="innerbox"></div>
 
-        </div>
-        <div class="propertyinfo">
+        <!-- this displays all objects in the array -->
+
+        <div class="propertyinfo" >
             <p>{{item.address}}</p>
             <div class="bath-bed">
                 <h5>bathrooms: {{item.bathrooms}}</h5>
@@ -14,12 +15,20 @@
                 <p>{{item.listingStatus}}</p>
             </div>
         </div>
-        <router-link :to="{name:'propertyDetails', params:{id:item}}" v-if="showPropertyDetails" :props='item'>
-             <propertyDetails  ></propertyDetails>
-        </router-link>
-       
+        <!-- i want this popup to display data for the object that is clicked -->
+        <teleport to='body'>
+            <div v-if="showModalOfItem==item.zpid"  :key="item.zpid" @click="closeModal" class='popup'>
+
+                <div class="">
+                    {{item.address}}
+                    {{item.bathrooms}}
+
+                </div>
+            </div>
+        </teleport>
+
     </div>
-   
+
 </div>
 </template>
 
@@ -34,13 +43,25 @@ export default {
         return {
 
             buyPropertyItems: [],
-            showPropertyDetails: null
+            showPropertyDetails: null,
+            showModalOfItem:null
+            
         }
     },
     methods: {
         propertyToggle() {
-            this.showPropertyDetails = true
+            this.showPropertyDetails = !this.showPropertyDetails
+            console.log('clicked');
+        },
 
+        propertyDefault() {
+            this.showPropertyDetails = null
+
+        },
+        closeModal(){
+            if(this.showModalOfItem !== null ){
+                this.showModalOfItem= null
+            }
         }
     },
     mounted() {
@@ -50,9 +71,6 @@ export default {
                 this.buyPropertyItems = response;
             })
             .catch(err => console.error(err));
-
-    },
-    created() {
         console.log(this.showPropertyDetails);
     }
 
@@ -74,6 +92,7 @@ export default {
 .box {
     height: inherit;
     border-radius: 10px;
+    position: relative;
 
 }
 
@@ -116,5 +135,24 @@ export default {
     display: flex;
     gap: 12px;
     padding: 0;
+}
+
+.popup {
+    position: absolute;
+    top: 0%;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: rgba(0, 0, 0, 0.1);
+}
+
+.popup>div {
+    background: #fff;
+    height: 50%;
+    width: 45%;
+    border-radius: 25px;
+    padding: 50px;
 }
 </style>
