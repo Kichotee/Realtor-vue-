@@ -1,5 +1,5 @@
 <template>
-<div class="property-grid" >
+<div class="property-grid">
 
     <div v-for="item in buyPropertyItems" @click="showModalOfItem = item.zpid" :key="item.zpid" class="box">
 
@@ -7,7 +7,7 @@
 
         <!-- this displays all objects in the array -->
 
-        <div class="propertyinfo" >
+        <div class="propertyinfo">
             <p>{{item.address}}</p>
             <div class="bath-bed">
                 <h5>bathrooms: {{item.bathrooms}}</h5>
@@ -17,11 +17,25 @@
         </div>
         <!-- i want this popup to display data for the object that is clicked -->
         <teleport to='body'>
-            <div v-if="showModalOfItem==item.zpid"  :key="item.zpid" @click="closeModal" class='popup'>
+            <div v-if="showModalOfItem==item.zpid" :key="item.zpid" @click.self="closeModal" class='popup'>
 
                 <div class="">
-                    {{item.address}}
-                    {{item.bathrooms}}
+                    <div class="popupImg">
+                        <img class="" :src="item.imgSrc" alt="">
+                    </div>
+                    <span></span>
+                    <div class="popupDetails">
+
+                        <p class='Address'> Address: {{item.address}}</p>
+                        <div class="price-type">
+                            <p>Property type:{{item.propertyType}}</p>
+                            <p>Price: ${{item.price}}</p>
+                        </div>
+                        <div class="living-space">
+                            Living space: {{item.livingArea}} m<sup>2</sup>
+                        </div>
+
+                    </div>
 
                 </div>
             </div>
@@ -44,8 +58,8 @@ export default {
 
             buyPropertyItems: [],
             showPropertyDetails: null,
-            showModalOfItem:null
-            
+            showModalOfItem: null
+
         }
     },
     methods: {
@@ -58,9 +72,9 @@ export default {
             this.showPropertyDetails = null
 
         },
-        closeModal(){
-            if(this.showModalOfItem !== null ){
-                this.showModalOfItem= null
+        closeModal() {
+            if (this.showModalOfItem !== null) {
+                this.showModalOfItem = null
             }
         }
     },
@@ -124,6 +138,7 @@ export default {
     flex-direction: column;
     justify-content: center;
     padding: 0 0 0 10px;
+
 }
 
 .propertyinfo p:first-of-type {
@@ -138,6 +153,7 @@ export default {
 }
 
 .popup {
+
     position: absolute;
     top: 0%;
     width: 100%;
@@ -145,14 +161,78 @@ export default {
     display: flex;
     align-items: center;
     justify-content: center;
-    background-color: rgba(0, 0, 0, 0.1);
+    background-color: rgba(0, 0, 0, 0.3);
 }
 
 .popup>div {
     background: #fff;
-    height: 50%;
-    width: 45%;
+    height: 70%;
+    width: 65%;
     border-radius: 25px;
-    padding: 50px;
+    display: flex;
+    gap: 20px;
+    text-align: left;
+    z-index: 3;
+    position: relative;
+    overflow: hidden;
+    overflow-y: hidden;
+
+}
+
+.popupImg {
+    height: 100%;
+
+    width: 60%;
+
+}
+
+.popupImg img {
+    object-fit: cover;
+    width: 100%;
+    height: 100%;
+    border-radius: 25px;
+
+}
+
+.popupDetails p {
+    font-size: 1rem;
+    align-self: center;
+}
+
+.popupDetails {
+    align-self: center;
+    font-family: poppins;
+    display: flex;
+    height: 100%;
+    align-text: left;
+    flex-direction: column;
+    gap: 1rem;
+    margin-top: 100px;
+
+}
+
+.popupDetails .Address {
+    color: #765341;
+
+}
+
+.popupDetails .price-type,
+.living-space {
+    color: #a3a3a3;
+
+}
+
+.popupDetails>div::after {
+    content: '';
+    height: 450px;
+    width: 200px;
+    transform: rotate(-45deg);
+    position: absolute;
+    top: -42%;
+    right: -12px;
+    display: block;
+    background: #a3a3a323;
+    z-index: -5;
+    border-radius: 50%;
 }
 </style>

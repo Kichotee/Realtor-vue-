@@ -15,13 +15,13 @@
   }
   </script>
   
-  <style>
+  <style scoped>
      
     
 
 #rent-component .visiblePopup{
   position:fixed;
-  top: 20vh;
+  top: 12vh;
   background: #f6f4f2;
   left: 0;
   height: 42vh;

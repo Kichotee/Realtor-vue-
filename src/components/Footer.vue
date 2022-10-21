@@ -64,6 +64,12 @@ export default {
     }
     footer ul li{
       list-style-type: none;
+       transition: 0.5s;
+    }
+    footer ul li:hover{
+      color: #765341;
+      text-decoration: underline;
+     
     }
 
 </style>
