@@ -1,5 +1,5 @@
 <template>
-<div id="buy-component">
+<div v-if="[`home`].includes($route.name)" id="buy-component">
     <div class="visiblePopup">
         <div class="column-1">
             <ul>

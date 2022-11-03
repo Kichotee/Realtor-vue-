@@ -1,7 +1,7 @@
 <template>
 <div class="property-grid">
 
-    <div v-for="item in buyPropertyItems" @click="showModalOfItem = item.zpid" :key="item.zpid" class="box">
+    <div v-for="item in users" @click="showModalOfItem = item.zpid" :key="item.zpid" class="box">
 
         <div :style="{'background-image': 'url('+item.imgSrc + ')'  }" class="innerbox"></div>
 
@@ -13,32 +13,36 @@
                 <h5>bathrooms: {{item.bathrooms}}</h5>
                 <h5>Bedrooms: {{item.bedrooms}}</h5>
                 <p>{{item.listingStatus}}</p>
+
             </div>
         </div>
         <!-- i want this popup to display data for the object that is clicked -->
         <teleport to='body'>
-            <div v-if="showModalOfItem==item.zpid" :key="item.zpid" @click.self="closeModal" class='popup'>
+            <transition name="pop">
+                <div v-if="showModalOfItem==item.zpid" :key="item.zpid" @click.self="closeModal" class='popup'>
 
-                <div class="">
-                    <div class="popupImg">
-                        <img class="" :src="item.imgSrc" alt="">
-                    </div>
-                    <span></span>
-                    <div class="popupDetails">
+                    <div class="">
+                        <div class="popupImg">
+                            <img class="" :src="item.imgSrc" alt="">
 
-                        <p class='Address'> Address: {{item.address}}</p>
-                        <div class="price-type">
-                            <p>Property type:{{item.propertyType}}</p>
-                            <p>Price: ${{item.price}}</p>
                         </div>
-                        <div class="living-space">
-                            Living space: {{item.livingArea}} m<sup>2</sup>
+                        <span></span>
+                        <div class="popupDetails">
+
+                            <p class='Address'> Address: {{item.address}}</p>
+                            <div class="price-type">
+                                <p>Property type:{{item.propertyType}}</p>
+                                <p>Price: ${{item.price}} {{products}} </p>
+                            </div>
+                            <div class="living-space">
+                                Living space: {{item.livingArea}} m<sup>2</sup>
+                            </div>
+
                         </div>
 
                     </div>
-
                 </div>
-            </div>
+            </transition>
         </teleport>
 
     </div>
@@ -48,6 +52,15 @@
 
 <script>
 import propertyDetails from '../components/propertyHomeDetails.vue'
+import {
+    mapState,
+    useStore
+} from 'vuex'
+import {
+    ref,
+    onMounted,
+    computed
+} from 'vue';
 
 export default {
     components: {
@@ -61,6 +74,10 @@ export default {
             showModalOfItem: null
 
         }
+    },
+
+    mounted() {
+
     },
     methods: {
         propertyToggle() {
@@ -78,14 +95,20 @@ export default {
             }
         }
     },
-    mounted() {
-        fetch('http://localhost:3000/props')
-            .then(response => response.json())
-            .then(response => {
-                this.buyPropertyItems = response;
-            })
-            .catch(err => console.error(err));
-        console.log(this.showPropertyDetails);
+    setup() {
+
+        //import the global store object from Vuex
+        // declare the store variable
+        const store = useStore();
+
+        const property =  store.state.users
+
+       
+        
+       
+        return{
+            property
+        }
     }
 
 }
@@ -234,5 +257,19 @@ export default {
     background: #a3a3a323;
     z-index: -5;
     border-radius: 50%;
+}
+
+.pop-enter-from,
+.pop-leave-to {
+    opacity: 0;
+    transform: translate(-60px);
+}
+
+.pop-enter-active {
+    transition: all 0.5s ease;
+}
+
+.pop-leave-active {
+    transition: all 0.5s ease-in-out;
 }
 </style>

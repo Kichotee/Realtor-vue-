@@ -1,5 +1,5 @@
 <template>
-    <div id="rent-component">
+    <div v-if="[`home`].includes($route.name)" id="rent-component">
         <div class="visiblePopup">
         rent a property
   
