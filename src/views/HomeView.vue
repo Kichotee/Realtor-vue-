@@ -43,14 +43,14 @@ export default {
 
         const store = useStore()
 
-        const users = computed(() => {
-            return store.state.users
+        const property = computed(() => {
+            return store.state.property
            
         })
 
-        onMounted(() => {
-            store.dispatch('fetchUsers')
-        })
+        return{
+            property
+        }
 
        
     }

@@ -1,7 +1,7 @@
 <template>
 <div class="property-grid">
 
-    <div v-for="item in users" @click="showModalOfItem = item.zpid" :key="item.zpid" class="box">
+    <div v-for="item in property" @click="showModalOfItem = item.zpid" :key="item.zpid" class="box">
 
         <div :style="{'background-image': 'url('+item.imgSrc + ')'  }" class="innerbox"></div>
 
@@ -101,11 +101,8 @@ export default {
         // declare the store variable
         const store = useStore();
 
-        const property =  store.state.users
+        const property =  store.state.property
 
-       
-        
-       
         return{
             property
         }

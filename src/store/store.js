@@ -6,19 +6,19 @@ import axios from "axios"
 
 export default createStore({
     state: {
-        users: []
+        property: []
     },
     getters: {
-      getUsers: (state) => state.users
+      getUsers: (state) => state.property
     },
     actions: {
-      async fetchUsers({ commit }) {
+      async fetchProperty({ commit }) {
           
             const data = await axios.get(' http://localhost:3000/props')
             .then(response=> response.data)
-            .then(users =>{
+            .then(property =>{
               
-              commit('SET_USERS', users)
+              commit('SET_property', property)
             })
              
             
@@ -26,8 +26,8 @@ export default createStore({
         }
     },
     mutations: {
-        SET_USERS(state, users) {
-          state.users = users
+        SET_property(state, property) {
+          state.property = property
       }
     }
 })
